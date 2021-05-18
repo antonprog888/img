@@ -1,0 +1,42 @@
+function GetProxyForUrl(Url: WideString; var Proxy, ProxyBypass, AutoConfigUrl: string): DWord;
+var
+ Config: TWinHttpCurrentUserIEProxyConfig;
+ AutoProxyOptions: TWinHttpAutoProxyOptions;
+ ProxyInfo: TWinHttpProxyInfo;
+ hSession: HINTERNET;
+begin
+   AutoProxyOptions.dwFlags:= 0;
+   AutoProxyOptions.dwAutoDetectFlags:= 0;
+   AutoProxyOptions.lpvReserved:= nil;
+   AutoProxyOptions.dwReserved:= 0;
+   Result:= 0;
+     if WinHttpGetIEProxyConfigForCurrentUser(@Config) then begin
+         Proxy:= Config.lpszProxy;
+         ProxyBypass:= Config.lpszProxyBypass;
+         AutoConfigUrl:= Config.lpszAutoConfigUrl;
+        if Config.fAutoDetect then begin
+             AutoProxyOptions.dwFlags:= WINHTTP_AUTOPROXY_AUTO_DETECT;
+             AutoProxyOptions.dwAutoDetectFlags:= WINHTTP_AUTO_DETECT_TYPE_DHCP + WINHTTP_AUTO_DETECT_TYPE_DNS_A;
+         end;
+        if Config.lpszAutoConfigUrl <> '' then begin
+             AutoProxyOptions.dwFlags:= AutoProxyOptions.dwFlags + WINHTTP_AUTOPROXY_CONFIG_URL;
+             AutoProxyOptions.lpszAutoConfigUrl:= Config.lpszAutoConfigUrl;
+         end;
+     end
+     else begin
+         AutoProxyOptions.dwFlags:= WINHTTP_AUTOPROXY_AUTO_DETECT;
+         AutoProxyOptions.dwAutoDetectFlags:= WINHTTP_AUTO_DETECT_TYPE_DHCP + WINHTTP_AUTO_DETECT_TYPE_DNS_A;
+     end;
+ 
+     hSession:= WinHttpOpen('WinHTTP AutoProxy/1.0', WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+     try
+       AutoProxyOptions.fAutoLogonIfChallenged:= True;
+       if WinHttpGetProxyForUrl(hSession, PWideChar('http://' + Url), @AutoProxyOptions, @ProxyInfo)
+        then
+           Proxy:= ProxyInfo.lpszProxy
+        else
+           Result:= GetLastError;
+     finally
+        WinHttpCloseHandle(hSession);
+     end;
+end;

@@ -1,0 +1,12 @@
+Также в данную папку можно добавить свои настройки в виде следующих файлов:
+
+Wincmd.ini
+Wcx_ftp.ini
+History.ini
+
+Default.bar
+System.bar
+Soft.bar
+UserBar.bar
+
+tcignore.txt

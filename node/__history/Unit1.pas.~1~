@@ -1,0 +1,45 @@
+unit Unit1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, xmldom, XMLIntf, StdCtrls, msxmldom, XMLDoc;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    XMLDocument1: TXMLDocument;
+    Memo1: TMemo;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ProcXmlNode(aXmlNode : IXMLNode);
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  ProcXmlNode(XMLDocument1.ChildNodes);
+end;
+
+procedure TForm1.ProcXmlNode(aXmlNode : IXMLNode);
+var i:Integer;
+begin
+  for i := 0 to aXmlNode.ChildNodes.Count - 1 do
+    begin
+      Memo1.Lines.Add(aXmlNode.ChildNodes[i].NodeName);
+      ProcXmlNode(aXmlNode.ChildNodes[i]);
+    end;
+end;
+end;
+
+end.

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2021.12.08 00:35:45.724.pas,F:\Work\DLL_Plugins\Unit1.pas=C:\Users\Towe4\Documents\node\Unit1.pas</Transaction>
+    <Transaction>2021.12.08 00:35:45.724.dfm,F:\Work\DLL_Plugins\Unit1.dfm=C:\Users\Towe4\Documents\node\Unit1.dfm</Transaction>
+    <Transaction>2021.12.08 01:21:09.800.dproj,F:\Work\DLL_Plugins\Project1.dproj=C:\Users\Towe4\Documents\node\Project1.dproj</Transaction>
+  </Transactions>
+</BorlandProject>
